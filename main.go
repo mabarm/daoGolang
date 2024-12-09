@@ -29,5 +29,39 @@ func main() {
 		log.Fatal(err)
 	}
 
+	createProductTable(db)
+
 	fmt.Println("Successfully connected to db")
+}
+
+// In real life, use migrations
+func createProductTable(db *sql.DB) {
+	/*
+	   	Product table will have
+	   - IP
+	   - Name
+	   - Price
+	   - Available
+	   - Date created
+	*/
+
+	//6 numbers, 2 of which can be decimal
+	//id auto incrementable
+	//query string representing the sql that we will execute
+	query := `CREATE TABLE IF NOT EXISTS product (
+		id SERIAL PRIMARY KEY,
+		name VARCHAR(100) NOT NULL,
+		price NUMERIC(6, 2) NOT NULL,
+		available BOOLEAN,
+		created timestamp DEFAULT NOW()
+		
+	)`
+
+	//Executes the query against the database( here postgresql)
+	_, err := db.Exec(query)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }
